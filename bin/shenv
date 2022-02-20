@@ -1,0 +1,52 @@
+#!/bin/sh
+
+bin_path="$(brew --prefix)/opt/shenv/libexec/bin"
+export PATH="$bin_path:${PATH}"
+
+shenv_logo() {
+	echo '       ,--.'
+	echo ' ,---. |  ,---.  ,---. ,--,--,,--.  ,--.'
+	echo '(  .-" |  .-.  || .-. :|      \\\  `"  /'  | sed "s/\"/'/g"
+	echo '.-"  `)|  | |  |\   --.|  ||  | \    /'   | sed "s/\"/'/g"
+	echo '`----" `--" `--" `----"`--""--"  `--"'    | sed "s/\"/'/g"
+}
+
+shenv_help() {
+	cat <<-EOS
+		$(tput bold)$(shenv_logo)$(tput sgr0)
+
+		$(tput bold)USAGE$(tput sgr0)
+		  shenv [DOTFILE ...]
+
+		$(tput bold)OPTIONS$(tput sgr0)
+		  -h, --help     Show this message
+	EOS
+}
+
+shenv_init() {
+	case $1 in
+		-) cat "$bin_path/shenv-init" ;;
+		*)
+			cat <<-EOS
+				# Load shenv automatically by appending
+				# the following to your shell profile:
+
+				eval "\$(command shenv init -)"
+			EOS
+			;;
+	esac
+}
+
+shenv_usage() {
+	echo 'Usage: shenv [DOTFILE...]'
+}
+
+shenv_main() {
+	case $1 in
+		-h | --help | help) shenv_help ; return ;;
+		init) shift ; shenv_init "$@" ; return ;;
+		*) shenv_usage ; return 1 ;;
+	esac
+}
+
+shenv_main "$@"

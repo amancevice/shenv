@@ -1,0 +1,13 @@
+#!/bin/sh
+shenv() {
+	case "$1" in
+		init) command shenv "$@" ; return ;;
+	esac
+	[ $# -eq 0 ] && dotfiles=('.env') || dotfiles=("$@")
+	tmpenv=$(mktemp)
+	cat "$@" > $tmpenv
+	for dotfile in $dotfiles ; do
+		echo "source $(tput bold)$dotfile$(tput sgr0)" >&2
+	done
+	$SHELL -c "set -o allexport ; source $tmpenv ; rm $tmpenv ; set +o allexport ; $SHELL"
+}
