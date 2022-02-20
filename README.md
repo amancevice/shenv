@@ -4,9 +4,17 @@ dotenv for your shell
 
 ## Install
 
+Install with Homebrew:
+
 ```bash
 brew tap amancevice/tap
 brew install amancevice/tap/shenv
+```
+
+Add the following to your shell profile:
+
+```bash
+eval "$(shenv init -)"
 ```
 
 ## Usage
