@@ -1,8 +1,5 @@
 #!/bin/sh
 
-bin_path="$(brew --prefix)/opt/shenv/libexec/bin"
-export PATH="$bin_path:${PATH}"
-
 shenv_logo() {
 	echo '       ,--.'
 	echo ' ,---. |  ,---.  ,---. ,--,--,,--.  ,--.'
@@ -27,7 +24,7 @@ shenv_help() {
 
 shenv_init() {
 	case $1 in
-		-) cat "$bin_path/shenv-init" ;;
+		-) cat "$(dirname $(realpath $0))/shenv-init" ;;
 		*) shenv_init_msg >&2 ; return 1 ;;
 	esac
 }
