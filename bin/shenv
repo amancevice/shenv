@@ -15,38 +15,38 @@ shenv_help() {
 	cat <<-EOS
 		$(tput bold)$(shenv_logo)$(tput sgr0)
 
+		$(shenv_init_msg)
+
 		$(tput bold)USAGE$(tput sgr0)
 		  shenv [DOTFILE ...]
 
 		$(tput bold)OPTIONS$(tput sgr0)
-		  -h, --help     Show this message
+		  -h, --help    Show this message
 	EOS
 }
 
 shenv_init() {
 	case $1 in
 		-) cat "$bin_path/shenv-init" ;;
-		*)
-			cat <<-EOS
-				# Load shenv automatically by appending
-				# the following to your shell profile:
-
-				eval "\$(command shenv init -)"
-			EOS
-			;;
+		*) shenv_init_msg >&2 ; return 1 ;;
 	esac
 }
 
-shenv_usage() {
-	echo 'Usage: shenv [DOTFILE...]'
+shenv_init_msg() {
+	cat <<-EOS
+		# Load shenv automatically by appending
+		# the following to your shell profile:
+
+		eval "\$(command shenv init -)"
+	EOS
 }
 
 shenv_main() {
 	case $1 in
 		-h | --help | help) shenv_help ; return ;;
-		init) shift ; shenv_init "$@" ; return ;;
-		*) shenv_usage ; return 1 ;;
+		init) shift ;;
 	esac
+	shenv_init "$@"
 }
 
 shenv_main "$@"
