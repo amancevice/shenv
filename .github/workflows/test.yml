@@ -12,6 +12,7 @@ jobs:
           VAR_1=val_1
           VAR_2=val_2
           EOS
+      - run: ./bin/shenv init -
       - run: eval "$(./bin/shenv init -)"
       - run: shenv
       - run: >-
@@ -27,6 +28,7 @@ jobs:
           VAR_2=val_2
           EOS
       - run: echo 'VAR_2=val_x' > .env.development
+      - run: ./bin/shenv init -
       - run: eval "$(./bin/shenv init -)"
       - run: shenv .env .env.development
       - run: >-
