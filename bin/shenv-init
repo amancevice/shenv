@@ -7,7 +7,7 @@ shenv() {
 	[ "$#" -gt 0 ] && dotfiles=("$@")
 	cat "${dotfiles[*]}" > $tmpenv || return 1
 	for dotfile in $dotfiles; do
-		echo "source $(tput bold)$dotfile$(tput sgr0)" >&2
+		echo "source $dotfile" >&2
 	done
 	$SHELL -c "set -o allexport ; . $tmpenv ; rm $tmpenv ; set +o allexport ; $SHELL"
 }
