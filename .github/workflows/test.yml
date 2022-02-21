@@ -7,30 +7,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |-
+      - name: setup dotfiles
+        run: |
           cat <<-EOS > .env
           VAR_1=val_1
           VAR_2=val_2
           EOS
-      - run: ./bin/shenv init -
-      - run: eval "$(./bin/shenv init -)"
-      - run: shenv
-      - run: >-
-          [[ "$VAL_1" == "val_1" ]] &&
+      - name: test
+        run: |
+          eval "$(./bin/shenv init -)"
+          shenv
+          [[ "$VAL_1" == "val_1" ]]
           [[ "$VAL_2" == "val_2" ]]
   test-dotfiles:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |-
+      - name: setup dotfiles
+        run: |
           cat <<-EOS > .env
           VAR_1=val_1
           VAR_2=val_2
           EOS
-      - run: echo 'VAR_2=val_x' > .env.development
-      - run: ./bin/shenv init -
-      - run: eval "$(./bin/shenv init -)"
-      - run: shenv .env .env.development
-      - run: >-
-          [[ "$VAL_1" == "val_1" ]] &&
+          echo 'VAR_2=val_x' > .env.development
+      - name: test
+        run: |
+          eval "$(./bin/shenv init -)"
+          shenv .env .env.development
+          [[ "$VAL_1" == "val_1" ]]
           [[ "$VAL_2" == "val_x" ]]
