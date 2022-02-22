@@ -5,7 +5,7 @@ shenv() {
 	esac
 	local dotfiles=('.env') tmpenv=$(mktemp)
 	[ "$#" -gt 0 ] && dotfiles=("$@")
-	cat "${dotfiles[*]}" > $tmpenv || return 1
+	cat "${dotfiles[@]}" > $tmpenv || return 1
 	for dotfile in $dotfiles; do
 		echo "source $dotfile" >&2
 	done
